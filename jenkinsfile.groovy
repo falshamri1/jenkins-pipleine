@@ -1,52 +1,90 @@
 pipeline {
     agent any
-    
-    environment {
-        DIRECTORY_PATH = "C:\\path\\to\\code"
-        TESTING_ENVIRONMENT = "test-env"
-        PRODUCTION_ENVIRONMENT = "fahad"
-    }
-    
+
     stages {
         stage('Build') {
             steps {
-                echo "Fetch the source code from the directory path specified by the environment variable: ${env.DIRECTORY_PATH}"
-                echo "Compile the code and generate any necessary artifacts"
+                echo 'Initiating build process...'
+                // Execute build tasks here
             }
         }
-        
-        stage('Test') {
+
+        stage('Unit and Integration Tests') {
             steps {
-                echo "Run unit tests"
-                echo "Run integration tests"
+                echo 'Running unit tests using JUnit...'
+                echo 'Running integration tests using JUnit...'
+                // Simulate unit and integration tests
             }
-        }
-        
-        stage('Code Quality Check') {
-            steps {
-                echo "Check the quality of the code"
-            }
-        }
-        
-        stage('Deploy') {
-            steps {
-                echo "Deploy the application to a testing environment specified by the environment variable: ${env.TESTING_ENVIRONMENT}"
-            }
-        }
-        
-        stage('Approval') {
-            steps {
-                echo "Waiting for manual approval..."
-                script {
-                    // Sleep for 10 seconds
-                    sleep time: 10, unit: 'SECONDS'
+            post {
+                success {
+                    mail to: 'falshamri1994@gmail.com',
+                         subject: 'Tests Passed',
+                         body: 'All tests passed successfully.'
+                }
+                failure {
+                    mail to: 'falshamri1994@gmail.com',
+                         subject: 'Test Failures',
+                         body: 'Some tests failed. Please review the test results.'
                 }
             }
         }
-        
+
+        stage('Code Analysis') {
+            steps {
+                echo 'Performing code analysis. Executing SonarQube analysis using SonarScanner...'
+                // Execute code analysis tasks
+            }
+        }
+
+        stage('Security Scan') {
+            steps {
+                echo 'Performing security scan using OWASP ZAP (Zed Attack Proxy)...'
+                // Perform security scan tasks
+            }
+            post {
+                success {
+                    mail to: 'falshamri1994@gmail.com',
+                         subject: 'Security Scan Passed',
+                         body: 'No security vulnerabilities found.'
+                }
+                failure {
+                    mail to: 'falshamri1994@gmail.com',
+                         subject: 'Security Scan Failed',
+                         body: 'Security vulnerabilities detected. Immediate action required.'
+                }
+            }
+        }
+
+        stage('Deploy to Staging') {
+            steps {
+                echo 'Deploying the application to a staging server (e.g., AWS EC2 instance)...'
+                // Deploy to staging tasks
+            }
+        }
+
+        stage('Integration Tests on Staging') {
+            steps {
+                echo 'Running integration tests on the staging environment...'
+                // Simulate integration tests on staging
+            }
+            post {
+                success {
+                    mail to: 'falshamri1994@gmail.com',
+                         subject: 'Integration Tests on Staging Passed',
+                         body: 'Integration tests on staging passed successfully.'
+                }
+                failure {
+                    mail to: 'falshamri1994@gmail.com',
+                         subject: 'Integration Tests on Staging Failed',
+                         body: 'Integration tests on staging failed. Further investigation needed.'
+                }
+            }
+        }
+
         stage('Deploy to Production') {
             steps {
-                echo "Deploy the code to the production environment: ${env.PRODUCTION_ENVIRONMENT}"
+                echo 'Deploying the application to a production server (e.g., AWS EC2 instance)...'
+                // Deploy to production tasks
             }
         }
     }
