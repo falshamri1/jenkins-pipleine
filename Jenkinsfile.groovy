@@ -87,5 +87,11 @@ pipeline {
                 // Deploy to production tasks
             }
         }
+
+        stage('Adding a Commit') {
+            steps {
+                echo 'Commit added successfully.'
+            }
+        }
     }
 }
